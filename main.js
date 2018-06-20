@@ -1,20 +1,45 @@
-const ffmpeg = require('ffmpeg')
+var MjpegCamera = require('mjpeg-camera');
+var FileOnWrite = require('file-on-write');
+var fs = require('fs');
 
-try {
-	var process = new ffmpeg('./tmp/your_movie.avi');
-	process.then(function (video) {
+// Create a writable stream to generate files
+var fileWriter = new FileOnWrite({
+  path: './frames',
+  ext: '.jpeg',
+  filename: function(frame) {
+    return frame.name + '-' + frame.time;
+  },
+  transform: function(frame) {
+    return frame.data;
+  }
+});
 
-		video
-		.setVideoSize('640x?', true, true, '#fff')
-		.save('./your_movie.avi', function (error, file) {
-			if (!error)
-				console.log('Video file: ' + file);
-		});
+// Create an MjpegCamera instance
+var camera = new MjpegCamera({
+  name: 'backdoor',
+  user: 'admin',
+  password: 'wordup',
+  url: 'http://192.168.7.1/video',
+  motion: true
+});
 
-	}, function (err) {
-		console.log('Error: ' + err);
-	});
-} catch (e) {
-	console.log(e.code);
-	console.log(e.msg);
-}
+// Pipe frames to our fileWriter so we gather jpeg frames into the /frames folder
+camera.pipe(fileWriter);
+
+// Start streaming
+camera.start();
+
+// Stop recording after an hour
+setTimeout(function() {
+
+  // Stahp
+  camera.stop();
+
+  // Get one last frame
+  // Will open a connection long enough to get a single frame and then
+  // immediately close the connection
+  camera.getScreenshot(function(err, frame) {
+    fs.writeFile('final.jpeg', frame, process.exit);
+  });
+
+}, 60*60*1000);

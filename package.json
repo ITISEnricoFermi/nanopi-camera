@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/ITISEnricoFermi/nanopi-camera#readme",
   "dependencies": {
-    "ffmpeg": "0.0.4"
+    "file-on-write": "^1.1.1"
   }
 }
