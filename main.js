@@ -19,7 +19,7 @@ var camera = new MjpegCamera({
   name: 'backdoor',
   user: 'admin',
   password: 'wordup',
-  url: 'http://192.168.7.1/video',
+  url: 'http://localhost:8080/?action=stream',
   motion: true
 });
 
@@ -42,4 +42,4 @@ setTimeout(function() {
     fs.writeFile('final.jpeg', frame, process.exit);
   });
 
-}, 60*60*1000);
+}, 30*1000);
