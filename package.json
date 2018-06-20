@@ -1,0 +1,31 @@
+{
+  "name": "nanopi-camera",
+  "version": "0.0.0",
+  "description": "Camera module for cansat 2018",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ITISEnricoFermi/nanopi-camera.git"
+  },
+  "keywords": [
+    "nanopi",
+    "camera",
+    "cansat",
+    "enforce"
+  ],
+  "author": {
+    "name": "Ernesto Montada",
+    "email": "e.montada0@gmail.com"
+  },
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ITISEnricoFermi/nanopi-camera/issues"
+  },
+  "homepage": "https://github.com/ITISEnricoFermi/nanopi-camera#readme",
+  "dependencies": {
+    "ffmpeg": "0.0.4"
+  }
+}
