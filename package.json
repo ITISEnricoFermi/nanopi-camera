@@ -4,7 +4,8 @@
   "description": "Camera module for cansat 2018",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "mkdir node_modules && cd node_modules && git clone https://github.com/n4y0n/node-webcam.git"
   },
   "repository": {
     "type": "git",
@@ -24,9 +25,5 @@
   "bugs": {
     "url": "https://github.com/ITISEnricoFermi/nanopi-camera/issues"
   },
-  "homepage": "https://github.com/ITISEnricoFermi/nanopi-camera#readme",
-  "dependencies": {
-    "file-on-write": "^1.1.1",
-    "node-webcam": "file:node-webcam"
-  }
+  "homepage": "https://github.com/ITISEnricoFermi/nanopi-camera#readme"
 }
