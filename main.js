@@ -1,32 +1,16 @@
-var MjpegCamera = require('mjpeg-camera');
-var FileOnWrite = require('file-on-write');
-var fs = require('fs');
+var Recorder = require('rtsp-recorder');
 
-// Create a writable stream to generate files
-var fileWriter = new FileOnWrite({
-  path: './frames',
-  ext: '.jpeg',
-  filename: function(frame) {
-    return frame.name + '-' + frame.time;
-  },
-  transform: function(frame) {
-    return frame.data;
-  }
+var rec = new Recorder({
+    url: 'http://192.168.43.63:8080/?action=stream', //url to rtsp stream
+    timeLimit: 10, //length of one video file (seconds)
+    folder: 'videos/', //path to video folder
+    prefix: 'vid-', //prefix for video files
+    movieWidth: 1280, //width of video
+    movieHeight: 720, //height of video
+    maxDirSize: 1024*20, //max size of folder with videos (MB), when size of folder more than limit folder will be cleared
+    maxTryReconnect: 15 //max count for reconnects
+
 });
 
-// Create an MjpegCamera instance
-var camera = new MjpegCamera({
-  name: 'backdoor',
-  url: 'http://192.168.43.63:8080/?action=stream',
-  motion: false
-});
-
-// Pipe frames to our fileWriter so we gather jpeg frames into the /frames folder
-camera.pipe(fileWriter);
-
-// Start streaming
-camera.start();
-
-setTimeout(function() {
-  camera.stop();
-}, 10*1000);
+//start recording
+rec.initialize();
