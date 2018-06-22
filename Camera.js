@@ -9,6 +9,7 @@ class Camera {
    */
   constructor(opts) {
     this.opts = Object.assign({}, opts)
+    this.running = false
     this._restart()
   }
 
@@ -50,6 +51,11 @@ class Camera {
     })
     this.camera.pipe(this.motionWriter)
     this.camera.start()
+    this.running = true
+  }
+
+  get isRunning() {
+    return this.running
   }
 
   start() {
@@ -60,6 +66,7 @@ class Camera {
   stop() {
     if (this.camera) {
       this.camera.stop()
+      this.running = false
       this.camera = null
     }
   }
