@@ -17,10 +17,8 @@ var fileWriter = new FileOnWrite({
 // Create an MjpegCamera instance
 var camera = new MjpegCamera({
   name: 'backdoor',
-  user: 'admin',
-  password: 'wordup',
-  url: 'http://127.0.0.1:8080/?action=stream',
-  motion: true
+  url: 'http://192.168.43.63:8080/?action=stream',
+  motion: false
 });
 
 // Pipe frames to our fileWriter so we gather jpeg frames into the /frames folder
@@ -29,17 +27,6 @@ camera.pipe(fileWriter);
 // Start streaming
 camera.start();
 
-// Stop recording after an hour
 setTimeout(function() {
-
-  // Stahp
   camera.stop();
-
-  // Get one last frame
-  // Will open a connection long enough to get a single frame and then
-  // immediately close the connection
-  camera.getScreenshot(function(err, frame) {
-    fs.writeFile('final.jpeg', frame, process.exit);
-  });
-
-}, 30*1000);
+}, 10*1000);
