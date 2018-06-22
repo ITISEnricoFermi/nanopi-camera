@@ -19,7 +19,7 @@ var camera = new MjpegCamera({
   name: 'backdoor',
   user: 'admin',
   password: 'wordup',
-  url: 'http://localhost:8080/?action=stream',
+  url: 'http://127.0.0.1:8080/?action=stream',
   motion: true
 });
 
