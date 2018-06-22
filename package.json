@@ -27,6 +27,7 @@
   "homepage": "https://github.com/ITISEnricoFermi/nanopi-camera#readme",
   "dependencies": {
     "file-on-write": "^1.1.1",
-    "mjpeg-camera": "^1.7.2"
+    "mjpeg-camera": "^1.7.2",
+    "mkdirp": "^0.5.1"
   }
 }
