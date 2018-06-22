@@ -1,16 +1,23 @@
-var Recorder = require('rtsp-recorder');
+var MjpegCamera = require('mjpeg-camera');
+var FileOnWrite = require('file-on-write');
 
-var rec = new Recorder({
-    url: 'http://192.168.43.63:8080/?action=stream', //url to rtsp stream
-    timeLimit: 10, //length of one video file (seconds)
-    folder: 'videos/', //path to video folder
-    prefix: 'vid-', //prefix for video files
-    movieWidth: 1280, //width of video
-    movieHeight: 720, //height of video
-    maxDirSize: 1024*20, //max size of folder with videos (MB), when size of folder more than limit folder will be cleared
-    maxTryReconnect: 15 //max count for reconnects
+var cameraName = 'nano-pi';
 
+var camera = new MjpegCamera({
+  name: cameraName,
+  url: 'http://127.0.0.1:8080/?action=stream',
 });
 
-//start recording
-rec.initialize();
+var motionWriter = new FileOnWrite({
+  path: 'frames',
+  filename: function(frame) {
+    return frame.name + '-' + frame.time;
+  },
+  // We need to pull the jpeg out of the frame object
+  transform: function(frame) {
+    return frame.data;
+  },
+  ext: '.jpg'
+});
+
+camera.pipe(motionWriter)

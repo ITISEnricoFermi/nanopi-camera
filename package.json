@@ -26,11 +26,7 @@
   },
   "homepage": "https://github.com/ITISEnricoFermi/nanopi-camera#readme",
   "dependencies": {
-    "ffmpeg": "0.0.4",
     "file-on-write": "^1.1.1",
-    "mjpeg-camera": "^1.7.2",
-    "mjpeg-consumer": "^1.1.0",
-    "request": "^2.87.0",
-    "rtsp-recorder": "0.0.3"
+    "mjpeg-camera": "^1.7.2"
   }
 }
