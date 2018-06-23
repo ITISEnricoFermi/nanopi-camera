@@ -16,6 +16,7 @@ class Camera {
   _restart(newOpts) {
     if (newOpts) {
       this.opts = newOpts;
+      this.opts.rootdir = (this.opts.rootdir || "./") + new Date().getTime().toString()
     }
 
     if ("rootdir" in this.opts) {
@@ -25,16 +26,13 @@ class Camera {
     this.streamUrl = this.opts.streamUrl;
     this.name = this.opts.cameraName || "camera"; //prefix for each frame (helps processing)
 
-    let videoFolderName =
-      (this.opts.rootdir || "./") + new Date().getTime().toString();
-
     this.motionWriter = new FileOnWrite({
-      path: videoFolderName, // Unique folder for each video
-      filename: function(frame) {
+      path: this.opts.rootdir, // Unique folder for each video
+      filename: function (frame) {
         return frame.name + "-" + frame.time;
       },
       // We need to pull the jpeg out of the frame object
-      transform: function(frame) {
+      transform: function (frame) {
         return frame.data;
       },
       ext: ".jpg"
