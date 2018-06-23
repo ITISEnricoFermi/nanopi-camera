@@ -10,6 +10,7 @@ class Camera {
   constructor(opts) {
     this.opts = Object.assign({}, opts);
     this.running = false;
+    this.opts.rootdir = (this.opts.rootdir || "./") + new Date().getTime().toString()
     this._restart();
   }
 
@@ -49,8 +50,6 @@ class Camera {
       url: this.streamUrl || "http://127.0.0.1:8080/?action=stream"
     });
     this.camera.pipe(this.motionWriter);
-    this.camera.start();
-    this.running = true;
   }
 
   isRunning() {
@@ -58,12 +57,16 @@ class Camera {
   }
 
   start() {
-    this.stop();
-    this._init();
+    if (this.isRunning()) {
+      this.stop();
+      this._init();
+    }
+    this.camera.start()
+    this.running = true;
   }
 
   stop() {
-    if (this.camera) {
+    if (this.camera && this.isRunning()) {
       this.camera.stop();
       this.running = false;
       this.camera = null;
