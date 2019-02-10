@@ -10,13 +10,26 @@ class Camera {
     this.running = false;
     this.opts["rootdir"] =
       (this.opts.rootdir || "./") + new Date().getTime().toString();
+    this.name = this.opts.cameraName || "camera"; //prefix for each frame (helps processing)
 
     if (process.platform === "win32")
-      this.adapter = new (require("./platform/windows/ffmpeg"))("0");
+      this.adapter = new (require("./platform/windows/ffmpeg"))("0", {
+        savepath: this.opts.rootdir,
+        out: this.name,
+        framerate: 1,
+        drive: "vfwcap",
+        size: "320x176"
+      });
     if (process.platform === "linux")
-      this.adapter = new (require("./platform/linux/ffmpeg"))();
+      this.adapter = new (require("./platform/linux/ffmpeg"))("/dev/video0", {
+        savepath: this.opts.rootdir,
+        out: this.name,
+        framerate: 1,
+        drive: "v4l2",
+        size: "320x176"
+      });
     if (process.platform === "darwin")
-      this.adapter = new (require("./platform/mac/ffmpeg"))();
+      throw new Error("Not implemented for Mac");
 
     this._restart();
   }
@@ -32,21 +45,14 @@ class Camera {
       mkdirp(this.opts.rootdir);
     }
 
-    this.name = this.opts.cameraName || "camera"; //prefix for each frame (helps processing)
-
-    this.camera = null;
-
     this._init();
   }
 
   _init() {
-    this.camera = null;
+    this.camera = this.adapter;
   }
 
   set Running(to) {
-    if (!(to instanceof Boolean)) {
-      throw new Error("Running is a boolean");
-    }
     this.running = to;
   }
 
@@ -58,16 +64,16 @@ class Camera {
     if (this.Running) {
       this.stop();
       this._init();
+    } else {
+      this.camera.save_frames();
+      this.Running = true;
     }
-    //this.camera.start();
-    this.Running = true;
   }
 
   stop() {
-    if (this.camera && this.Running) {
+    if (this.Running) {
       this.camera.stop();
       this.Running = false;
-      this.camera = null;
     }
   }
 }

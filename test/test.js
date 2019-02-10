@@ -1,24 +1,23 @@
 process.env.NODE_ENV = "development";
 
-const adapter = new (require("../platform/windows/ffmpeg"))("0", {
-  savepath: __dirname + "\\hello\\",
-  out: "hello",
-  framerate: 1,
-  drive: "vfwcap",
-  size: "320x176"
+const Camera = require("../Camera");
+
+const adapter = new Camera({
+  cameraName: "test",
+  rootdir: __dirname + "/hello/"
 });
-adapter.save_frames();
+adapter.start();
 
 process.on("SIGKILL", s => {
-  adapter.FFMPEGProcess.kill(s);
+  adapter.stop();
   process.exit(0);
 });
 process.on("SIGINT", s => {
-  adapter.FFMPEGProcess.kill(s);
+  adapter.stop();
   process.exit(0);
 });
 process.on("SIGTERM", s => {
-  adapter.FFMPEGProcess.kill(s);
+  adapter.stop();
   process.exit(0);
 });
 setTimeout(() => adapter.stop(), 20000);

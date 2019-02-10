@@ -30,7 +30,7 @@ class FFMPEG {
   _capture(path = null, format = ".avi") {
     if (this.process) this.process.kill("SIGKILL");
     this.process = spawn(
-      "ffmpeg.exe",
+      "ffmpeg",
       [
         "-y",
         "-f",
