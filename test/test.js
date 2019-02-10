@@ -1,13 +1,24 @@
-const Camera = require("../Camera")
+process.env.NODE_ENV = "development";
 
-let c = new Camera({
-  streamUrl: "http://192.168.43.63:8080/?action=stream",
-  rootdir: "./videos/"
-})
+const adapter = new (require("../platform/windows/ffmpeg"))("0", {
+  savepath: __dirname + "\\hello\\",
+  out: "hello",
+  framerate: 1,
+  drive: "vfwcap",
+  size: "320x176"
+});
+adapter.save_frames();
 
-c.start()
-c.stop()
-
-setTimeout(() => {
-  c.start()
-}, 10 * 1000)
+process.on("SIGKILL", s => {
+  adapter.FFMPEGProcess.kill(s);
+  process.exit(0);
+});
+process.on("SIGINT", s => {
+  adapter.FFMPEGProcess.kill(s);
+  process.exit(0);
+});
+process.on("SIGTERM", s => {
+  adapter.FFMPEGProcess.kill(s);
+  process.exit(0);
+});
+setTimeout(() => adapter.stop(), 20000);
