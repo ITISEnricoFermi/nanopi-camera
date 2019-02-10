@@ -47,8 +47,8 @@ class FFMPEG {
       ],
       { detached: true }
     );
-
-    this.process.stderr.on("data", d => console.log(d.toString()));
+    if (process.env.NODE_ENV === "development")
+        this.process.stderr.on("data", d => console.log(d.toString()));
   }
 
   get FFMPEGProcess() {
