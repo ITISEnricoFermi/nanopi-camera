@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/ITISEnricoFermi/nanopi-camera#readme",
   "dependencies": {
-    "mkdirp": "^0.5.1"
+    "mkdirp": "^1.0.3"
   }
 }
